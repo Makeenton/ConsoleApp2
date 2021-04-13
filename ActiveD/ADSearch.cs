@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.DirectoryServices.AccountManagement;
 
 namespace ActiveD
 {
@@ -12,23 +7,21 @@ namespace ActiveD
         /// <summary>
         /// Поиск пользователя по логину
         /// </summary>
-        /// <returns>имя пользователя</returns>
-        public string GetUser()
+        /// <param name="login">Логин пользователя.</param>
+        /// <returns>Имя пользователя, если не найдено - <see langword="null"/></returns>
+        public string GetUser(string login)
         {
-            Console.Write("Введите логин: ");
-            string login = Console.ReadLine();
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-            UserPrincipal user = UserPrincipal.FindByIdentity(ctx, login);
-            
-            
-            if (user != null)
-            {
-                return user.ToString();
-            }
-            else
-                return "Пользователь не найден";
-                        
+            string result = null;
 
+            if (login != null)
+            {
+                using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
+                {
+                    result = UserPrincipal.FindByIdentity(ctx, login).ToString();
+                }
+            }
+            
+            return result;
         }
     }
 }

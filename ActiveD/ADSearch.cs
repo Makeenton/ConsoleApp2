@@ -9,6 +9,10 @@ namespace ActiveD
 {
     public class ADSearch
     {
+        /// <summary>
+        /// Поиск пользователя по логину
+        /// </summary>
+        /// <returns>имя пользователя</returns>
         public string GetUser()
         {
             Console.Write("Введите логин: ");

@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="ADUserProperties.cs" />
     <Compile Include="ADProvider.cs" />
-    <Compile Include="ADSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

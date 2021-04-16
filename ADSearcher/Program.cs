@@ -13,8 +13,10 @@ namespace ADSearcher
         static void Main()
         {
 
-            ADSearch ctx = new ADSearch();
-            string User = ctx.GetUser().ToString();
+            ADProvider ctx = new ADProvider();
+            Console.WriteLine("Введите логин пользователя:");
+            string inputlogin = Console.ReadLine();
+            string User = ctx.GetUser(inputlogin);
             Console.WriteLine($"{User}");
             Console.ReadKey();
      

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.Linq;
 
 namespace ActiveD
 {
@@ -10,28 +12,54 @@ namespace ActiveD
         /// Поиск всех пользователей в АД
         /// </summary>
         /// <returns>Список пользователей</returns>
+
+        private PrincipalContext ctx;
+        private UserPrincipal up;
+
+        public ADProvider()
+        {
+            ctx = new PrincipalContext(ContextType.Domain);
+            up = new UserPrincipal(ctx);
+        }
+
+
         public List<ADUserProperties> GetAllUsers()
         {
 
+            // find a user
+            PrincipalSearcher srch = new PrincipalSearcher(up);
             List<ADUserProperties> users = new List<ADUserProperties>();
-
-            DirectoryEntry CurrentDomain = new DirectoryEntry();
-            DirectorySearcher adSearcher = new DirectorySearcher(CurrentDomain);
-            adSearcher.Filter = "(&(objectClass=user)(objectCategory=person))";
-            SearchResultCollection resultCol = adSearcher.FindAll();
             
-            foreach (SearchResult result in resultCol)
+
+            using (PrincipalSearchResult<Principal> results = srch.FindAll())
             {
-                ADUserProperties user = new ADUserProperties();
+                    foreach (Principal found in results)
+                    {
+                        ADUserProperties user = new ADUserProperties();
+                        user.Login = found.SamAccountName;
+                        user.UserName = found.Name;
+                        users.Add(user);
+                    }
+                    return users;
+             }
+        }
 
-                user.Login = (String)result.Properties["samaccountname"][0];
-                user.UserName = (String)result.Properties["cn"][0];
+        public string GetUser(string login)
+        {
+            string result = null;
 
-                users.Add(user);
-
+            if (login != null)
+            {
+                using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
+                {
+                    result = UserPrincipal.FindByIdentity(ctx, login)?.ToString();
+                }
             }
-            return users;
 
+            return result;
         }
     }
+
+    
+
 }

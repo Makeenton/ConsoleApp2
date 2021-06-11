@@ -11,6 +11,8 @@ namespace ActiveD
     {
         public string Login;
         public string UserName;
+        public DateTime? LastLogon;
+
     }
 
  

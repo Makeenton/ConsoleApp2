@@ -16,7 +16,7 @@ namespace ConsoleApp2
 
             foreach (ADUserProperties user in users)
             {
-                Console.WriteLine($"{user.UserName}({user.Login})" );
+                Console.WriteLine($"{user.UserName}({user.Login})({user.LastLogon})" );
                                 
             }
 

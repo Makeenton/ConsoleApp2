@@ -12,12 +12,19 @@ namespace ADSearcher
     {
         static void Main()
         {
-
+            double number;
             ADProvider ctx = new ADProvider();
-            Console.WriteLine("Введите логин пользователя:");
-            string inputlogin = Console.ReadLine();
-            string User = ctx.GetUser(inputlogin);
-            Console.WriteLine($"{User}");
+            Console.WriteLine("Срок в днях:");
+            string inputdays = Console.ReadLine();
+            Double.TryParse(inputdays, out number);
+            List<ADUserProperties> oldusers = ctx.GettimefilterUsers(number);
+            foreach (ADUserProperties user in oldusers)
+            {
+                Console.WriteLine($"{user.UserName}({user.Login})({user.LastLogon})");
+
+            }
+
+            Console.WriteLine("========================================");
             Console.ReadKey();
      
         }
